@@ -3,7 +3,7 @@ from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message, ChatJoinRequest
 
 # Manually setting the bot token and API credentials
-environ["BOT_TOKEN"] = "7740922993:AAFPzuwZDAfUuyMEgQFg0iMnGfCD9cmwiPs"
+environ["BOT_TOKEN"] = "7678544492:AAFUq20f4cqEQgz7pjyKoalNiFW2v9TOA3E"
 environ["API_ID"] = "25707779"  # Replace with your actual API ID
 environ["API_HASH"] = "929888fadc26c0670e78e16fe0a3aa6a"  # Replace with your actual API hash
 
