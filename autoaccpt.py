@@ -3,7 +3,7 @@ from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message, User, ChatJoinRequest
 
 # Manually setting the bot token and API credentials
-environ["BOT_TOKEN"] = "7740922993:AAFPzuwZDAfUuyMEgQFg0iMnGfCD9cmwiPs"
+environ["BOT_TOKEN"] = "7678544492:AAFUq20f4cqEQgz7pjyKoalNiFW2v9TOA3E"
 environ["API_ID"] = "25707779"  # Replace with your actual API ID
 environ["API_HASH"] = "929888fadc26c0670e78e16fe0a3aa6a"  # Replace with your actual API hash
 
@@ -20,9 +20,9 @@ async def start(client: pr0fess0r_99, message: Message):
     approvedbot = await client.get_me()  # Get bot information (includes bot username)
     
     button = [
-        [InlineKeyboardButton("Add Me In Chat ➕", url="http://t.me/Tesialbot?startgroup=botstart"),
-         InlineKeyboardButton("Add Me In Channel ➕", url="http://t.me/Tesialbot?startchannel=botstart")],
-        [InlineKeyboardButton("🗿 Owner", url="t.me/ZyncMaster")]
+        [InlineKeyboardButton("Add Me In Chat ➕", url="http://t.me/Araccbot?startgroup=botstart"),
+         InlineKeyboardButton("Add Me In Channel ➕", url="http://t.me/Araccbot?startchannel=botstart")],
+        [InlineKeyboardButton("🗿 Owner", url="t.me/bakanuehe")]
     ]
     
     # Send the welcome message with bold text and buttons
