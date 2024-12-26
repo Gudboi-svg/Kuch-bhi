@@ -1,12 +1,15 @@
 from os import environ
 from pyrogram import Client, filters
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message, User, ChatJoinRequest
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message, ChatJoinRequest
+import aiohttp
+from aiohttp import web
 
 # Manually setting the bot token and API credentials
 environ["BOT_TOKEN"] = "7678544492:AAFUq20f4cqEQgz7pjyKoalNiFW2v9TOA3E"
 environ["API_ID"] = "25707779"  # Replace with your actual API ID
 environ["API_HASH"] = "929888fadc26c0670e78e16fe0a3aa6a"  # Replace with your actual API hash
 
+# Create the pyrogram client
 pr0fess0r_99 = Client(
     "Auto Approved Bot",
     bot_token=environ["BOT_TOKEN"],
@@ -16,7 +19,7 @@ pr0fess0r_99 = Client(
 
 # Start command to greet the user and show buttons
 @pr0fess0r_99.on_message(filters.private & filters.command(["start"]))
-async def start(client: pr0fess0r_99, message: Message):
+async def start(client, message):
     approvedbot = await client.get_me()  # Get bot information (includes bot username)
     
     button = [
@@ -36,18 +39,17 @@ async def start(client: pr0fess0r_99, message: Message):
 
 # Handle new join requests and automatically approve
 @pr0fess0r_99.on_chat_join_request(filters.group | filters.channel)
-async def auto_approve(client: pr0fess0r_99, message: ChatJoinRequest):
+async def auto_approve(client, message: ChatJoinRequest):
     chat = message.chat
     user = message.from_user
     print(f"{user.first_name} joined 🤝")  # Logs user who joined
-
+    
     # Approving join request
     await client.approve_chat_join_request(chat_id=chat.id, user_id=user.id)
-
+    
     # Send the welcome message to the user via private chat (DM)
-    # Customized text as per your requirement
     greeting_text = f"**Hello {user.first_name}, welcome to 𝐒𝐚𝐲𝐚𝐩𝐫𝐨.𝐮𝐬!\n\nThank you for joining. We suggest you to also check out our other channels for more exciting content!"
-
+    
     # Buttons for channel invites (add your actual invite links here)
     buttons = [
         [InlineKeyboardButton("Free Netflix", url="https://t.me/+IoncB0Cb_TtmNjgx"),
@@ -63,8 +65,17 @@ async def auto_approve(client: pr0fess0r_99, message: ChatJoinRequest):
         disable_web_page_preview=True
     )
 
-# Start the bot
-print("Auto Approved Bot running...")
+# Initialize and start the aiohttp web server
+async def init_app():
+    app = web.Application()
+    return app
 
-# Run the bot
-pr0fess0r_99.run()
+# Run the bot and the aiohttp web server on port 8080
+if __name__ == "__main__":
+    print("Auto Approved Bot running...")
+    
+    # Start the bot client
+    pr0fess0r_99.run()
+    
+    # Start the aiohttp server on port 8080
+    web.run_app(init_app(), port=8080)
