@@ -48,7 +48,7 @@ async def auto_approve(client, message: ChatJoinRequest):
     await client.approve_chat_join_request(chat_id=chat.id, user_id=user.id)
     
     # Send the welcome message to the user via private chat (DM)
-    greeting_text = f"**Hello {user.first_name}, welcome to 𝐒𝐚𝐲𝐚𝐩𝐫𝐨.𝐮𝐬!\n\nThank you for joining. We suggest you to also check out our other channels for more exciting content!"
+    greeting_text = f"**Hello {user.first_name}, welcome to 𝐒𝐚𝐲𝐚𝐩𝐫𝐨.𝐮𝐬!\n\nThank you for joining. We suggest you to also check out our other channels for more exciting content!**"
     
     # Buttons for channel invites (add your actual invite links here)
     buttons = [
@@ -70,12 +70,15 @@ async def init_app():
     app = web.Application()
     return app
 
-# Run the bot and the aiohttp web server on port 8080
+# Run the bot and the aiohttp web server
 if __name__ == "__main__":
     print("Auto Approved Bot running...")
-    
+
     # Start the bot client
     pr0fess0r_99.run()
-    
-    # Start the aiohttp server on port 8080
-    web.run_app(init_app(), port=8080)
+
+    # Get the dynamic port from the environment (for cloud platforms like Koyeb)
+    port = int(environ.get('PORT', 8080))  # Default to 8080 if PORT not set
+
+    # Start the aiohttp server on the dynamic port
+    web.run_app(init_app(), port=port)
