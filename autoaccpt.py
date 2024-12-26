@@ -1,7 +1,7 @@
 import os
+import asyncio
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message, ChatJoinRequest
-import aiohttp
 from aiohttp import web
 
 # Manually setting the bot token and API credentials
@@ -36,8 +36,12 @@ class AutoApproveBot(Client):
         return web.Response(text="AutoApproveBot is running!")
 
     async def start(self):
-        await super().start()  # Start the bot
-        await self.start_server()  # Start the web server
+        # Start the bot in a separate task
+        bot_task = asyncio.create_task(super().start())
+        web_server_task = asyncio.create_task(self.start_server())
+
+        # Wait for both tasks to finish
+        await asyncio.gather(bot_task, web_server_task)
 
     async def stop(self, *args):
         await super().stop()
