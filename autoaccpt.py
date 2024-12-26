@@ -7,6 +7,7 @@ environ["BOT_TOKEN"] = "7678544492:AAFUq20f4cqEQgz7pjyKoalNiFW2v9TOA3E"
 environ["API_ID"] = "25707779"  # Replace with your actual API ID
 environ["API_HASH"] = "929888fadc26c0670e78e16fe0a3aa6a"  # Replace with your actual API hash
 
+# Create a new client instance
 pr0fess0r_99 = Client(
     "Auto Approved Bot",
     bot_token=environ["BOT_TOKEN"],
@@ -17,8 +18,6 @@ pr0fess0r_99 = Client(
 # Start command to greet the user and show buttons
 @pr0fess0r_99.on_message(filters.private & filters.command(["start"]))
 async def start(client: pr0fess0r_99, message: Message):
-    approvedbot = await client.get_me()  # Get bot information (includes bot username)
-    
     button = [
         [InlineKeyboardButton("Add Me In Chat ➕", url="http://t.me/Araccbot?startgroup=botstart"),
          InlineKeyboardButton("Add Me In Channel ➕", url="http://t.me/Araccbot?startchannel=botstart")],
@@ -45,8 +44,7 @@ async def auto_approve(client: pr0fess0r_99, message: ChatJoinRequest):
     await client.approve_chat_join_request(chat_id=chat.id, user_id=user.id)
 
     # Send the welcome message to the user via private chat (DM)
-    # Customized text as per your requirement
-    greeting_text = f"**Hello {user.first_name},\n\nThank you for joining. We suggest you to also check out our other channels for more exciting content!"
+    greeting_text = f"**Hello {user.first_name},\n\nThank you for joining. We suggest you also check out our other channels for more exciting content!**"
 
     # Buttons for channel invites (add your actual invite links here)
     buttons = [
@@ -62,11 +60,6 @@ async def auto_approve(client: pr0fess0r_99, message: ChatJoinRequest):
         disable_web_page_preview=True
     )
 
-# Start the bot asynchronously
-async def main():
-    print("Auto Approved Bot running...")
-    await pr0fess0r_99.start()
-
-# Run the bot asynchronously
-import asyncio
-asyncio.run(main())
+# Run the bot using pr0fess0r_99.run(), which manages the asyncio event loop for you
+print("Auto Approved Bot running...")
+pr0fess0r_99.run()
