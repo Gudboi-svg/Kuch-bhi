@@ -5,9 +5,10 @@ from aiohttp import web
 import asyncio
 
 # Manually setting the bot token and API credentials
-environ["BOT_TOKEN"] = "your_bot_token"
-environ["API_ID"] = "your_api_id"  # Replace with your actual API ID
-environ["API_HASH"] = "your_api_hash"  # Replace with your actual API hash
+environ["BOT_TOKEN"] = "7678544492:AAFUq20f4cqEQgz7pjyKoalNiFW2v9TOA3E"
+environ["API_ID"] = "25707779"  # Replace with your actual API ID
+environ["API_HASH"] = "929888fadc26c0670e78e16fe0a3aa6a"  # Replace with your actual API hash
+  # Replace with your actual API hash
 
 # Create a new client instance
 pr0fess0r_99 = Client(
