@@ -1,6 +1,8 @@
 from os import environ
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message, ChatJoinRequest
+from flask import Flask, jsonify
+import threading
 
 # Manually setting the bot token and API credentials
 environ["BOT_TOKEN"] = "7678544492:AAFUq20f4cqEQgz7pjyKoalNiFW2v9TOA3E"
@@ -60,6 +62,19 @@ async def auto_approve(client: pr0fess0r_99, message: ChatJoinRequest):
         disable_web_page_preview=True
     )
 
-# Run the bot using pr0fess0r_99.run(), which manages the asyncio event loop for you
+# Function to run the Flask web server
+def run_health_check_server():
+    app = Flask(__name__)
+
+    @app.route('/health')
+    def health_check():
+        return jsonify({"status": "ok"}), 200
+
+    app.run(host='0.0.0.0', port=8080)
+
+# Start the Flask web server in a new thread
+threading.Thread(target=run_health_check_server).start()
+
+# Run the bot
 print("Auto Approved Bot running...")
 pr0fess0r_99.run()
