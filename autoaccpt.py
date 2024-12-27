@@ -83,6 +83,7 @@ async def run_web_server():
 async def main():
     await run_web_server()
     await pr0fess0r_99.start()
+    await pr0fess0r_99.idle()
 
 if __name__ == "__main__":
     asyncio.run(main())
