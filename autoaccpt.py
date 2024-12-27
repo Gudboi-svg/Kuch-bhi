@@ -9,6 +9,9 @@ environ["BOT_TOKEN"] = "7678544492:AAFUq20f4cqEQgz7pjyKoalNiFW2v9TOA3E"
 environ["API_ID"] = "25707779"  # Replace with your actual API ID
 environ["API_HASH"] = "929888fadc26c0670e78e16fe0a3aa6a"  # Replace with your actual API hash
 
+# Define a variable for the base URL of your Koyeb app
+BASE_URL = "gradual-larisa-animebotforpractice-f4065a4e.koyeb.app"
+
 # Create a new client instance
 pr0fess0r_99 = Client(
     "Auto Approved Bot",
@@ -21,8 +24,8 @@ pr0fess0r_99 = Client(
 @pr0fess0r_99.on_message(filters.private & filters.command(["start"]))
 async def start(client: pr0fess0r_99, message: Message):
     button = [
-        [InlineKeyboardButton("Add Me In Chat ➕", url="http://t.me/Araccbot?startgroup=botstart"),
-         InlineKeyboardButton("Add Me In Channel ➕", url="http://t.me/Araccbot?startchannel=botstart")],
+        [InlineKeyboardButton("Add Me In Chat ➕", url=f"http://t.me/Araccbot?startgroup=botstart"),
+         InlineKeyboardButton("Add Me In Channel ➕", url=f"http://t.me/Araccbot?startchannel=botstart")],
         [InlineKeyboardButton("🗿 Owner", url="t.me/bakanuehe")]
     ]
     
@@ -72,13 +75,14 @@ async def start_aiohttp():
 
     app.router.add_get('/health', health_check)
 
-    # Start the aiohttp server
+    # Start the aiohttp server on port 8080 (as Koyeb expects it)
     runner = web.AppRunner(app)
     await runner.setup()
     site = web.TCPSite(runner, '0.0.0.0', 8080)  # Listen on port 8080
     await site.start()
 
-    print("Aiohttp server running on port 8080")
+    print(f"Aiohttp server running on port 8080 for {BASE_URL}")
+
     # Run the bot alongside aiohttp
     await pr0fess0r_99.start()
 
