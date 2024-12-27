@@ -1,13 +1,13 @@
 from os import environ
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message, ChatJoinRequest
-from flask import Flask, jsonify
-import threading
+from aiohttp import web
+import asyncio
 
 # Manually setting the bot token and API credentials
-environ["BOT_TOKEN"] = "7678544492:AAFUq20f4cqEQgz7pjyKoalNiFW2v9TOA3E"
-environ["API_ID"] = "25707779"  # Replace with your actual API ID
-environ["API_HASH"] = "929888fadc26c0670e78e16fe0a3aa6a"  # Replace with your actual API hash
+environ["BOT_TOKEN"] = "your_bot_token"
+environ["API_ID"] = "your_api_id"  # Replace with your actual API ID
+environ["API_HASH"] = "your_api_hash"  # Replace with your actual API hash
 
 # Create a new client instance
 pr0fess0r_99 = Client(
@@ -62,19 +62,27 @@ async def auto_approve(client: pr0fess0r_99, message: ChatJoinRequest):
         disable_web_page_preview=True
     )
 
-# Function to run the Flask web server
-def run_health_check_server():
-    app = Flask(__name__)
+# Web server for health check
+async def web_server():
+    app = web.Application()
+    app.router.add_get('/health', health_check)
+    return app
 
-    @app.route('/health')
-    def health_check():
-        return jsonify({"status": "ok"}), 200
+async def health_check(request):
+    return web.Response(text="ok")
 
-    app.run(host='0.0.0.0', port=8080)
+# Function to run the web server
+async def run_web_server():
+    app = web.AppRunner(await web_server())
+    await app.setup()
+    bind_address = "0.0.0.0"
+    port = int(environ.get("PORT", 8080))
+    await web.TCPSite(app, bind_address, port).start()
 
-# Start the Flask web server in a new thread
-threading.Thread(target=run_health_check_server).start()
+# Main function to run the bot and the web server
+async def main():
+    await run_web_server()
+    await pr0fess0r_99.start()
 
-# Run the bot
-print("Auto Approved Bot running...")
-pr0fess0r_99.run()
+if __name__ == "__main__":
+    asyncio.run(main())
