@@ -7,7 +7,7 @@ import asyncio
 # Manually setting the bot token and API credentials
 environ["BOT_TOKEN"] = "7678544492:AAFUq20f4cqEQgz7pjyKoalNiFW2v9TOA3E"
 environ["API_ID"] = "25707779"  # Replace with your actual API ID
-environ["API_HASH"] = "929888fadc26c0670e78e16fe0a3aa6a"  # Replace with your actual API hash  # Replace with your actual API hash
+environ["API_HASH"] = "929888fadc26c0670e78e16fe0a3aa6a"  # Replace with your actual API hash
 
 # Create a new client instance
 pr0fess0r_99 = Client(
@@ -62,28 +62,32 @@ async def auto_approve(client: pr0fess0r_99, message: ChatJoinRequest):
         disable_web_page_preview=True
     )
 
-# Web server for health check
-async def web_server():
+# A basic aiohttp web server setup
+async def start_aiohttp():
     app = web.Application()
+
+    # Define a simple health check route for the server to be up
+    async def health_check(request):
+        return web.Response(text="Server is up and running!")
+
     app.router.add_get('/health', health_check)
-    return app
 
-async def health_check(request):
-    return web.Response(text="ok")
+    # Start the aiohttp server
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, '0.0.0.0', 8080)  # Listen on port 8080
+    await site.start()
 
-# Function to run the web server
-async def run_web_server():
-    app = web.AppRunner(await web_server())
-    await app.setup()
-    bind_address = "0.0.0.0"
-    port = int(environ.get("PORT", 8080))
-    await web.TCPSite(app, bind_address, port).start()
-
-# Main function to run the bot and the web server
-async def main():
-    await run_web_server()
+    print("Aiohttp server running on port 8080")
+    # Run the bot alongside aiohttp
     await pr0fess0r_99.start()
-    await pr0fess0r_99.idle()
 
+    # Keep the server running
+    while True:
+        await asyncio.sleep(3600)  # Sleep to keep the server running
+
+# Run both aiohttp server and the bot
 if __name__ == "__main__":
-    asyncio.run(main())
+    loop = asyncio.get_event_loop()
+    loop.create_task(start_aiohttp())  # Start the aiohttp server
+    loop.run_forever()  # Keep the bot running forever
